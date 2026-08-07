@@ -633,154 +633,6 @@
             transition: transform 0.2s;
         }
         .whatsapp-float:hover { transform: scale(1.1); }
-
-        /* --- Estilos del Asistente de IA --- */
-        .ai-floating-btn {
-            position: fixed;
-            bottom: 90px;
-            right: 25px;
-            width: 55px;
-            height: 55px;
-            background: #0f0f13;
-            border: 2px solid var(--accent-color, #00ffff);
-            border-radius: 50%;
-            color: var(--accent-color, #00ffff);
-            font-size: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
-            transition: all 0.3s ease;
-            z-index: 9999;
-        }
-
-        .ai-floating-btn:hover {
-            transform: scale(1.08);
-            box-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
-        }
-
-        .ai-chat-container {
-            position: fixed;
-            bottom: 95px;
-            right: 25px;
-            width: 340px;
-            height: 450px;
-            background: #0f0f13;
-            border: 1px solid var(--accent-color, #00ffff);
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 255, 255, 0.2);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            z-index: 9999;
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(15px);
-            transition: all 0.3s ease;
-        }
-
-        .ai-chat-container.active {
-            opacity: 1;
-            pointer-events: auto;
-            transform: translateY(0);
-        }
-
-        .ai-chat-header {
-            background: #181820;
-            padding: 12px 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #fff;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .ai-chat-close {
-            background: none;
-            border: none;
-            color: #aaa;
-            font-size: 18px;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .ai-chat-close:hover {
-            color: #fff;
-        }
-
-        .ai-chat-messages {
-            flex: 1;
-            padding: 15px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            font-size: 13px;
-            color: #e0e0e0;
-        }
-
-        .ai-message {
-            padding: 8px 12px;
-            border-radius: 8px;
-            max-width: 80%;
-            line-height: 1.4;
-            word-break: break-word;
-        }
-
-        .ai-message.user {
-            background: rgba(0, 255, 255, 0.15);
-            border: 1px solid rgba(0, 255, 255, 0.3);
-            align-self: flex-end;
-            color: #fff;
-        }
-
-        .ai-message.bot {
-            background: #1a1a24;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            align-self: flex-start;
-        }
-
-        .ai-chat-input-area {
-            padding: 10px;
-            background: #121218;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            gap: 8px;
-        }
-
-        .ai-chat-input {
-            flex: 1;
-            background: #1a1a24;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 6px;
-            padding: 8px 12px;
-            color: #fff;
-            font-size: 13px;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .ai-chat-input:focus {
-            border-color: var(--accent-color, #00ffff);
-        }
-
-        .ai-chat-send {
-            background: var(--accent-color, #00ffff);
-            color: #000;
-            border: none;
-            border-radius: 6px;
-            padding: 0 14px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-
-        .ai-chat-send:hover {
-            opacity: 0.85;
-        }
     </style>
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -1062,13 +914,20 @@
         
         <div id="contenedorDatosCuentas" class="datos-pago-box"></div>
 
+        <!-- SECCIÓN CUPÓN DE DESCUENTO AGREGADA -->
+        <div style="margin-bottom: 15px; display: flex; gap: 8px;">
+            <input type="text" id="inputCupon" placeholder="Código de Cupón (Ej: ESTEBAN)" style="margin-bottom: 0; text-transform: uppercase;">
+            <button type="button" class="ios-button-style" id="btnAplicarCupon" style="margin-top: 0; width: 110px; padding: 12px; font-size: 14px;">Aplicar</button>
+        </div>
+        <div id="mensajeCupon" style="font-size: 13px; font-weight: 600; margin-bottom: 12px; min-height: 18px;"></div>
+
         <input type="text" id="refPago" placeholder="N° Referencia" inputmode="numeric">
         
         <div style="margin: 15px 0; text-align: center;">
             <label for="comprobanteImagen" style="display: inline-block; background: linear-gradient(135deg, rgba(0, 122, 255, 0.08), rgba(0, 122, 255, 0.02)); border: 1px dashed var(--ios-blue); padding: 14px 20px; border-radius: 16px; color: var(--ios-blue); cursor: pointer; font-weight: 600; width: 100%; box-sizing: border-box; font-size: 15px; border-top-width: 1.5px; box-shadow: inset 0 2px 4px rgba(255,255,255,0.3);">
                 📸 Adjuntar imagen del comprobante
             </label>
-            <input type="file" id="comprobanteImagen" accept="image/*" style="display: none;" onchange="if(this.files.length > 0) { document.getElementById('nombreArchivo').innerText = '✅ ' + this.files[0].name; document.getElementById('nombreArchivo').style.color = '#4CD964'; } else { document.getElementById('nombreArchivo').innerText = 'Ningún archivo seleccionado'; document.getElementById('nombreArchivo').style.color = 'var(--text-secondary)'; }">
+            <input type="file" id="comprobanteImagen" accept="image/*" style="display: none;" onchange="if(this.files.length > 0) { const el = document.getElementById('nombreArchivo'); if(el) { el.innerText = '✅ ' + this.files[0].name; el.style.color = '#4CD964'; } } else { const el = document.getElementById('nombreArchivo'); if(el) { el.innerText = 'Ningún archivo seleccionado'; el.style.color = 'var(--text-secondary)'; } }">
             <div id="nombreArchivo" style="font-size: 13px; color: var(--text-secondary); margin-top: 6px; font-weight: 500;">Ningún archivo seleccionado</div>
         </div>
 
@@ -1127,6 +986,7 @@
 
 <script>
     const tasaDolarHoy = 900;
+    let descuentoAplicado = 0; // 0% de descuento por defecto
 
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function reproducirSonidoToque(frecuencia = 600, duracion = 0.05) {
@@ -1173,8 +1033,10 @@
 
     const cambiarPantalla = (pantallaOcultar, pantallaMostrar) => {
         reproducirSonidoToque(400, 0.08);
-        document.getElementById(pantallaOcultar).classList.remove('active');
-        document.getElementById(pantallaMostrar).classList.add('active');
+        const ocultarEl = document.getElementById(pantallaOcultar);
+        const mostrarEl = document.getElementById(pantallaMostrar);
+        if (ocultarEl) ocultarEl.classList.remove('active');
+        if (mostrarEl) mostrarEl.classList.add('active');
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
@@ -1185,14 +1047,15 @@
         
         if (item.classList.contains('open')) {
             item.classList.remove('open');
-            content.style.maxHeight = null;
+            if (content) content.style.maxHeight = null;
         } else {
             document.querySelectorAll('.faq-item').forEach(i => {
                 i.classList.remove('open');
-                i.querySelector('.faq-content').style.maxHeight = null;
+                const c = i.querySelector('.faq-content');
+                if (c) c.style.maxHeight = null;
             });
             item.classList.add('open');
-            content.style.maxHeight = content.scrollHeight + "px";
+            if (content) content.style.maxHeight = content.scrollHeight + "px";
         }
     }
 
@@ -1214,16 +1077,25 @@
     document.getElementById('btnElegirFreeFire').addEventListener('click', function() {
         reproducirSonidoToque(700, 0.08);
         juegoSeleccionado = "Free Fire";
-        document.getElementById('juegoSeleccionadoLabel').innerText = "🛡️ Servidor Oficial LATAM";
-        document.getElementById('tituloIdLabel').innerText = "ID Jugador (UID)";
+        const labelJuego = document.getElementById('juegoSeleccionadoLabel');
+        const labelId = document.getElementById('tituloIdLabel');
+        const inputsLogin = document.getElementById('contenedorInputsLogin');
+        const segTabs = document.getElementById('contenedorSegmentadoTabs');
+        const panelDia = document.getElementById('panelDiamantes');
+        const panelRob = document.getElementById('panelRoblox');
+
+        if (labelJuego) labelJuego.innerText = "🛡️ Servidor Oficial LATAM";
+        if (labelId) labelId.innerText = "ID Jugador (UID)";
         
-        document.getElementById('contenedorInputsLogin').innerHTML = `
-            <input type="text" id="idInput" placeholder="Ingresa tu UID de Free Fire" inputmode="numeric">
-        `;
+        if (inputsLogin) {
+            inputsLogin.innerHTML = `
+                <input type="text" id="idInput" placeholder="Ingresa tu UID de Free Fire" inputmode="numeric">
+            `;
+        }
         
-        document.getElementById('contenedorSegmentadoTabs').style.display = 'flex';
-        document.getElementById('panelDiamantes').classList.add('active');
-        document.getElementById('panelRoblox').classList.remove('active');
+        if (segTabs) segTabs.style.display = 'flex';
+        if (panelDia) panelDia.classList.add('active');
+        if (panelRob) panelRob.classList.remove('active');
         
         cambiarPantalla('seccionSeleccionJuego', 'seccionLogin');
     });
@@ -1231,20 +1103,28 @@
     document.getElementById('btnElegirRoblox').addEventListener('click', function() {
         reproducirSonidoToque(700, 0.08);
         juegoSeleccionado = "Roblox";
-        document.getElementById('juegoSeleccionadoLabel').innerText = "🤖 Servidor Oficial Roblox";
-        document.getElementById('tituloIdLabel').innerText = "Credenciales de Roblox";
+        const labelJuego = document.getElementById('juegoSeleccionadoLabel');
+        const labelId = document.getElementById('tituloIdLabel');
+        const inputsLogin = document.getElementById('contenedorInputsLogin');
+        const segTabs = document.getElementById('contenedorSegmentadoTabs');
+        const panelRob = document.getElementById('panelRoblox');
+
+        if (labelJuego) labelJuego.innerText = "🤖 Servidor Oficial Roblox";
+        if (labelId) labelId.innerText = "Credenciales de Roblox";
         
-        document.getElementById('contenedorInputsLogin').innerHTML = `
-            <input type="text" id="idInput" placeholder="Usuario o Correo de Roblox" style="margin-bottom: 12px;">
-            <div class="input-group">
-                <input type="password" id="passwordInput" placeholder="Contraseña de Roblox">
-                <button type="button" class="toggle-password" onclick="togglePasswordVisibility()">👁️</button>
-            </div>
-        `;
+        if (inputsLogin) {
+            inputsLogin.innerHTML = `
+                <input type="text" id="idInput" placeholder="Usuario o Correo de Roblox" style="margin-bottom: 12px;">
+                <div class="input-group">
+                    <input type="password" id="passwordInput" placeholder="Contraseña de Roblox">
+                    <button type="button" class="toggle-password" onclick="togglePasswordVisibility()">👁️</button>
+                </div>
+            `;
+        }
         
-        document.getElementById('contenedorSegmentadoTabs').style.display = 'none';
+        if (segTabs) segTabs.style.display = 'none';
         document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-        document.getElementById('panelRoblox').classList.add('active');
+        if (panelRob) panelRob.classList.add('active');
         
         cambiarPantalla('seccionSeleccionJuego', 'seccionLogin');
     });
@@ -1253,11 +1133,7 @@
         reproducirSonidoToque(500, 0.04);
         const passInput = document.getElementById('passwordInput');
         if (passInput) {
-            if (passInput.type === "password") {
-                passInput.type = "text";
-            } else {
-                passInput.type = "password";
-            }
+            passInput.type = (passInput.type === "password") ? "text" : "password";
         }
     }
 
@@ -1265,14 +1141,24 @@
     const paneles = ['panelDiamantes', 'panelTarjetas', 'panelPase'];
 
     pestañas.forEach((idTab, index) => {
-        document.getElementById(idTab).addEventListener('click', function() {
-            reproducirSonidoToque(650, 0.04);
-            pestañas.forEach(t => document.getElementById(t).classList.remove('active'));
-            ['panelDiamantes', 'panelTarjetas', 'panelPase'].forEach(p => document.getElementById(p).classList.remove('active'));
-            
-            this.classList.add('active');
-            document.getElementById(paneles[index]).classList.add('active');
-        });
+        const tabEl = document.getElementById(idTab);
+        if (tabEl) {
+            tabEl.addEventListener('click', function() {
+                reproducirSonidoToque(650, 0.04);
+                pestañas.forEach(t => {
+                    const el = document.getElementById(t);
+                    if(el) el.classList.remove('active');
+                });
+                ['panelDiamantes', 'panelTarjetas', 'panelPase'].forEach(p => {
+                    const el = document.getElementById(p);
+                    if(el) el.classList.remove('active');
+                });
+                
+                this.classList.add('active');
+                const panelDestino = document.getElementById(paneles[index]);
+                if(panelDestino) panelDestino.classList.add('active');
+            });
+        }
     });
 
     document.getElementById('btnLogin').addEventListener('click', function() {
@@ -1283,7 +1169,9 @@
         const progressBarWrapper = document.getElementById('progressBarWrapper');
         const progressBarFill = document.getElementById('progressBarFill');
         const loadingStepsContainer = document.getElementById('loadingStepsContainer');
+        const btnAtrasSel = document.getElementById('btnAtrasSeleccionJuego');
         
+        if (!idInput) return;
         jugadorId = idInput.value.trim();
 
         if (juegoSeleccionado === "Free Fire") {
@@ -1302,15 +1190,15 @@
             }
         }
 
-        cardLogin.classList.add('verificando');
-        btnLogin.style.display = 'none';
-        document.getElementById('btnAtrasSeleccionJuego').style.display = 'none';
+        if (cardLogin) cardLogin.classList.add('verificando');
+        if (btnLogin) btnLogin.style.display = 'none';
+        if (btnAtrasSel) btnAtrasSel.style.display = 'none';
         idInput.disabled = true;
         const passInputRef = document.getElementById('passwordInput');
         if (passInputRef) passInputRef.disabled = true;
 
-        progressBarWrapper.style.display = 'block';
-        loadingStepsContainer.style.display = 'flex';
+        if (progressBarWrapper) progressBarWrapper.style.display = 'block';
+        if (loadingStepsContainer) loadingStepsContainer.style.display = 'flex';
 
         localStorage.setItem('esteban_last_id', jugadorId);
 
@@ -1327,47 +1215,59 @@
         const step2 = document.getElementById('step2');
         const step3 = document.getElementById('step3');
 
-        step1.classList.add('active');
-        progressBarFill.style.width = '33%';
+        if (step1) step1.classList.add('active');
+        if (progressBarFill) progressBarFill.style.width = '33%';
 
         setTimeout(() => {
-            step1.classList.remove('active');
-            step1.classList.add('completed');
-            step1.querySelector('.step-icon').innerText = '✅';
-            
-            step2.classList.add('active');
-            progressBarFill.style.width = '66%';
+            if (step1) {
+                step1.classList.remove('active');
+                step1.classList.add('completed');
+                const icon = step1.querySelector('.step-icon');
+                if (icon) icon.innerText = '✅';
+            }
+            if (step2) step2.classList.add('active');
+            if (progressBarFill) progressBarFill.style.width = '66%';
         }, 1000);
 
         setTimeout(() => {
-            step2.classList.remove('active');
-            step2.classList.add('completed');
-            step2.querySelector('.step-icon').innerText = '✅';
-            
-            step3.classList.add('active');
-            progressBarFill.style.width = '100%';
+            if (step2) {
+                step2.classList.remove('active');
+                step2.classList.add('completed');
+                const icon = step2.querySelector('.step-icon');
+                if (icon) icon.innerText = '✅';
+            }
+            if (step3) step3.classList.add('active');
+            if (progressBarFill) progressBarFill.style.width = '100%';
         }, 2200);
 
         setTimeout(function() {
-            step3.classList.remove('active');
-            step3.classList.add('completed');
-            step3.querySelector('.step-icon').innerText = '✅';
+            if (step3) {
+                step3.classList.remove('active');
+                step3.classList.add('completed');
+                const icon = step3.querySelector('.step-icon');
+                if (icon) icon.innerText = '✅';
+            }
 
-            cardLogin.classList.remove('verificando'); 
+            if (cardLogin) cardLogin.classList.remove('verificando'); 
             
-            btnLogin.style.display = 'block';
-            document.getElementById('btnAtrasSeleccionJuego').style.display = 'block';
-            btnLogin.innerText = "Verificar";
+            if (btnLogin) {
+                btnLogin.style.display = 'block';
+                btnLogin.innerText = "Verificar";
+            }
+            if (btnAtrasSel) btnAtrasSel.style.display = 'block';
             idInput.disabled = false;
             if (passInputRef) passInputRef.disabled = false;
-            progressBarWrapper.style.display = 'none';
-            loadingStepsContainer.style.display = 'none';
-            progressBarFill.style.width = '0%';
+            if (progressBarWrapper) progressBarWrapper.style.display = 'none';
+            if (loadingStepsContainer) loadingStepsContainer.style.display = 'none';
+            if (progressBarFill) progressBarFill.style.width = '0%';
             
             ['step1', 'step2', 'step3'].forEach(id => {
                 const el = document.getElementById(id);
-                el.classList.remove('completed');
-                el.querySelector('.step-icon').innerText = '⏳';
+                if (el) {
+                    el.classList.remove('completed');
+                    const icon = el.querySelector('.step-icon');
+                    if (icon) icon.innerText = '⏳';
+                }
             });
 
             cambiarPantalla('seccionLogin', 'seccionRecarga');
@@ -1380,9 +1280,11 @@
             reproducirSonidoToque(900, 0.1);
             op.classList.add('pulsado'); 
 
-            precioSeleccionado = op.getAttribute('data-precio');
-            packSeleccionadoNombre = op.getAttribute('data-pack');
-            document.getElementById('selectMetodoPago').value = "";
+            precioSeleccionado = op.getAttribute('data-precio') || "$0.00";
+            packSeleccionadoNombre = op.getAttribute('data-pack') || "Paquete";
+            
+            const selectMetodo = document.getElementById('selectMetodoPago');
+            if (selectMetodo) selectMetodo.value = "";
 
             setTimeout(function() {
                 op.classList.remove('pulsado');
@@ -1391,62 +1293,124 @@
         }
     });
 
+    // Función segura para calcular y mostrar el precio con comprobación de nulidad (Null-safety)
+    function actualizarCalculoPrecio() {
+        if (!precioSeleccionado) return;
+        const precioLimpio = precioSeleccionado.replace('$', '').trim();
+        const precioNumericoOriginal = parseFloat(precioLimpio) || 0;
+        const precioConDescuento = precioNumericoOriginal * (1 - descuentoAplicado);
+        
+        const totalEnBolivares = (precioConDescuento * tasaDolarHoy).toFixed(2);
+        const precioFormateadoUSD = "$" + precioConDescuento.toFixed(2);
+
+        const contenedorDatos = document.getElementById('contenedorDatosCuentas');
+        const precioTotalEl = document.getElementById('precioTotal');
+
+        let textoTotalFinal = "Total: ";
+        if (metodoSeleccionado === "Pago Móvil") {
+            textoTotalFinal += totalEnBolivares + " Bs.";
+        } else {
+            textoTotalFinal += precioFormateadoUSD;
+        }
+
+        if (descuentoAplicado > 0) {
+            textoTotalFinal += " (¡Descuento aplicado!)";
+        }
+
+        if (precioTotalEl) {
+            precioTotalEl.innerText = textoTotalFinal;
+        }
+
+        if (contenedorDatos) {
+            if (metodoSeleccionado === "Pago Móvil") {
+                contenedorDatos.innerHTML = `
+                    <img src="https://www.bancodevenezuela.com/wp-content/uploads/2022/07/cropped-popup.png" class="logo-metodo" alt="Venezuela">
+                    <b style="color: var(--ios-blue); display: block; margin-bottom: 5px;">📋 Datos de Pago Móvil:</b>
+                    • Banco: Venezuela (0102)<br>
+                    • Teléfono: 0412-6701585 <button class="btn-copy-ios" onclick="copiarAlPortapapeles('04126701585', this)">Copiar</button><br>
+                    • Cédula: V-32.345.727 <button class="btn-copy-ios" onclick="copiarAlPortapapeles('32345727', this)">Copiar</button><br>
+                    • <b>Monto: ${totalEnBolivares} Bs.</b> <button class="btn-copy-ios" onclick="copiarAlPortapapeles('${totalEnBolivares}', this)">Copiar</button>
+                `;
+            } else if (metodoSeleccionado === "Binance Pay") {
+                contenedorDatos.innerHTML = `
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Binance_Logo.svg" class="logo-metodo" alt="Binance">
+                    <b style="color: var(--ios-blue); display: block; margin-bottom: 5px;">🔶 Datos de Binance Pay:</b>
+                    • Binance ID: 319790003 <button class="btn-copy-ios" onclick="copiarAlPortapapeles('319790003', this)">Copiar</button><br>
+                    • <b>Monto exacto: ${precioFormateadoUSD}</b> <button class="btn-copy-ios" onclick="copiarAlPortapapeles('${precioFormateadoUSD}', this)">Copiar</button>
+                `;
+            } else if (metodoSeleccionado === "PayPal") {
+                contenedorDatos.innerHTML = `
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" class="logo-metodo" alt="PayPal">
+                    <b style="color: var(--ios-blue); display: block; margin-bottom: 5px;">💳 Datos de PayPal:</b>
+                    • Correo: sarmientoesteban039@gmail.com <button class="btn-copy-ios" onclick="copiarAlPortapapeles('sarmientoesteban039@gmail.com', this)">Copiar</button><br>
+                    • <b>Monto exacto: ${precioFormateadoUSD}</b> <button class="btn-copy-ios" onclick="copiarAlPortapapeles('${precioFormateadoUSD}', this)">Copiar</button>
+                `;
+            } else {
+                contenedorDatos.innerHTML = "";
+            }
+        }
+    }
+
     document.getElementById('btnContinuarMetodo').addEventListener('click', function() {
         reproducirSonidoToque(750, 0.08);
         const select = document.getElementById('selectMetodoPago');
+        if (!select) return;
         metodoSeleccionado = select.value;
 
         if (!metodoSeleccionado) {
             return alert("Por favor, selecciona un método de pago en la barra desplegable.");
         }
 
-        const precioNumerico = parseFloat(precioSeleccionado.replace('$', ''));
-        const totalEnBolivares = (precioNumerico * tasaDolarHoy).toFixed(2);
-        
-        const contenedorDatos = document.getElementById('contenedorDatosCuentas');
+        const inputCuponEl = document.getElementById('inputCupon');
+        const mensajeCuponEl = document.getElementById('mensajeCupon');
+        if (inputCuponEl) inputCuponEl.value = "";
+        if (mensajeCuponEl) mensajeCuponEl.innerText = "";
+        descuentoAplicado = 0;
 
-        if (metodoSeleccionado === "Pago Móvil") {
-            document.getElementById('precioTotal').innerText = "Total: " + totalEnBolivares + " Bs.";
-            contenedorDatos.innerHTML = `
-                <img src="https://www.bancodevenezuela.com/wp-content/uploads/2022/07/cropped-popup.png" class="logo-metodo" alt="Venezuela">
-                <b style="color: var(--ios-blue); display: block; margin-bottom: 5px;">📋 Datos de Pago Móvil:</b>
-                • Banco: Venezuela (0102)<br>
-                • Teléfono: 0412-6701585 <button class="btn-copy-ios" onclick="copiarAlPortapapeles('04126701585', this)">Copiar</button><br>
-                • Cédula: V-32.345.727 <button class="btn-copy-ios" onclick="copiarAlPortapapeles('32345727', this)">Copiar</button><br>
-                • <b>Monto: ${totalEnBolivares} Bs.</b> <button class="btn-copy-ios" onclick="copiarAlPortapapeles('${totalEnBolivares}', this)">Copiar</button>
-            `;
-        } else if (metodoSeleccionado === "Binance Pay") {
-            document.getElementById('precioTotal').innerText = "Total: " + precioSeleccionado;
-            contenedorDatos.innerHTML = `
-                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Binance_Logo.svg" class="logo-metodo" alt="Binance">
-                <b style="color: var(--ios-blue); display: block; margin-bottom: 5px;">🔶 Datos de Binance Pay:</b>
-                • Binance ID: 319790003 <button class="btn-copy-ios" onclick="copiarAlPortapapeles('319790003', this)">Copiar</button><br>
-                • <b>Monto exacto: ${precioSeleccionado}</b> <button class="btn-copy-ios" onclick="copiarAlPortapapeles('${precioSeleccionado}', this)">Copiar</button>
-            `;
-        } else if (metodoSeleccionado === "PayPal") {
-            document.getElementById('precioTotal').innerText = "Total: " + precioSeleccionado;
-            contenedorDatos.innerHTML = `
-                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" class="logo-metodo" alt="PayPal">
-                <b style="color: var(--ios-blue); display: block; margin-bottom: 5px;">💳 Datos de PayPal:</b>
-                • Correo: sarmientoesteban039@gmail.com <button class="btn-copy-ios" onclick="copiarAlPortapapeles('sarmientoesteban039@gmail.com', this)">Copiar</button><br>
-                • <b>Monto exacto: ${precioSeleccionado}</b> <button class="btn-copy-ios" onclick="copiarAlPortapapeles('${precioSeleccionado}', this)">Copiar</button>
-            `;
-        }
-
+        actualizarCalculoPrecio();
         cambiarPantalla('seccionMetodoPago', 'seccionPago');
+    });
+
+    document.getElementById('btnAplicarCupon').addEventListener('click', function() {
+        reproducirSonidoToque(800, 0.06);
+        const inputCuponEl = document.getElementById('inputCupon');
+        const mensajeEl = document.getElementById('mensajeCupon');
+        if (!inputCuponEl || !mensajeEl) return;
+
+        const codigo = inputCuponEl.value.trim().toUpperCase();
+
+        if (codigo === "ALEX") {
+            descuentoAplicado = 0.05;
+            mensajeEl.innerText = "¡Cupón aplicado con éxito!";
+            mensajeEl.style.color = "var(--ios-green)";
+            actualizarCalculoPrecio();
+        } else if (codigo === "VIP20") {
+            descuentoAplicado = 0.20;
+            mensajeEl.innerText = "¡Cupón VIP aplicado! 20% de descuento.";
+            mensajeEl.style.color = "var(--ios-green)";
+            actualizarCalculoPrecio();
+        } else {
+            descuentoAplicado = 0;
+            mensajeEl.innerText = "⚠️ Código de cupón inválido o expirado.";
+            mensajeEl.style.color = "var(--ios-red)";
+            actualizarCalculoPrecio();
+        }
     });
 
     document.getElementById('btnFinalizar').addEventListener('click', function() {
         reproducirSonidoToque(950, 0.12);
-        referenciaIngresada = document.getElementById('refPago').value.trim();
+        const refInput = document.getElementById('refPago');
         const btnFinalizar = document.getElementById('btnFinalizar');
+        if (!refInput || !btnFinalizar) return;
+
+        referenciaIngresada = refInput.value.trim();
         
         if (referenciaIngresada.length < 5) { 
             return alert("Por favor, ingresa una referencia válida (mínimo 5 caracteres)."); 
         }
 
-        const archivos = document.getElementById('comprobanteImagen').files;
-        if (archivos.length === 0) {
+        const compImg = document.getElementById('comprobanteImagen');
+        if (compImg && compImg.files.length === 0) {
             return alert("Por favor, selecciona o toma una foto del comprobante para continuar.");
         }
 
@@ -1459,14 +1423,16 @@
             if (validacionTerminada) return;
             validacionTerminada = true;
 
-            const precioNumerico = parseFloat(precioSeleccionado.replace('$', ''));
-            const totalEnBolivares = (precioNumerico * tasaDolarHoy).toFixed(2);
-            const montoFinalTexto = (metodoSeleccionado === "Pago Móvil") ? totalEnBolivares + " Bs." : precioSeleccionado;
+            const precioLimpio = precioSeleccionado ? precioSeleccionado.replace('$', '').trim() : "0";
+            const precioNumericoOriginal = parseFloat(precioLimpio) || 0;
+            const precioConDescuento = precioNumericoOriginal * (1 - descuentoAplicado);
+            const totalEnBolivares = (precioConDescuento * tasaDolarHoy).toFixed(2);
+            const montoFinalTexto = (metodoSeleccionado === "Pago Móvil") ? totalEnBolivares + " Bs." : "$" + precioConDescuento.toFixed(2);
 
             if (juegoSeleccionado === "Free Fire") {
                 const listaNombres = ["Slayer", "Alfa", "Ghost", "Ninja", "Titan", "Raptor", "Zeus", "Shadow", "Gamer"];
                 const ultimos4 = jugadorId.slice(-4);
-                const indice = parseInt(jugadorId) % listaNombres.length;
+                const indice = parseInt(jugadorId || "0") % listaNombres.length;
                 jugadorNombre = listaNombres[indice] + "_" + ultimos4;
             } else {
                 jugadorNombre = jugadorId;
@@ -1487,23 +1453,30 @@
                 }).catch(() => {});
             }
 
-            document.getElementById('t-juego').innerText = juegoSeleccionado;
-            document.getElementById('t-nombre').innerText = (juegoSeleccionado === "Free Fire" ? "⚔️ " : "🤖 ") + jugadorNombre;
-            document.getElementById('t-id').innerText = jugadorId;
-            document.getElementById('t-pack').innerText = packSeleccionadoNombre;
-            document.getElementById('t-metodo').innerText = metodoSeleccionado;
-            document.getElementById('t-monto').innerText = montoFinalTexto;
-            document.getElementById('t-ref').innerText = referenciaIngresada;
+            const setVal = (id, text) => {
+                const el = document.getElementById(id);
+                if (el) el.innerText = text;
+            };
+
+            setVal('t-juego', juegoSeleccionado);
+            setVal('t-nombre', (juegoSeleccionado === "Free Fire" ? "⚔️ " : "🤖 ") + jugadorNombre);
+            setVal('t-id', jugadorId);
+            setVal('t-pack', packSeleccionadoNombre);
+            setVal('t-metodo', metodoSeleccionado);
+            setVal('t-monto', montoFinalTexto);
+            setVal('t-ref', referenciaIngresada);
 
             btnFinalizar.disabled = false;
             btnFinalizar.innerText = "Confirmar Pago";
             cambiarPantalla('seccionPago', 'seccionTicket');
 
-            confetti({
-                particleCount: 120,
-                spread: 70,
-                origin: { y: 0.6 }
-            });
+            if (typeof confetti === 'function') {
+                confetti({
+                    particleCount: 120,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+            }
         };
 
         const temporizadorFondeo = setTimeout(() => {
@@ -1535,7 +1508,8 @@
 
     document.getElementById('btnDescargarRecibo').addEventListener('click', function() {
         reproducirSonidoToque(850, 0.08);
-        const montoFinalTexto = document.getElementById('t-monto').innerText;
+        const montoEl = document.getElementById('t-monto');
+        const montoFinalTexto = montoEl ? montoEl.innerText : "$0.00";
         
         const canvas = document.createElement('canvas');
         canvas.width = 500;
@@ -1551,7 +1525,7 @@
         ctx.fillStyle = '#007AFF';
         ctx.font = 'bold 28px -apple-system, sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText('TIENDA ESTEBAN 4K', 250, 60);
+        ctx.fillText('TIENDA ESTEBAN ', 250, 60);
 
         ctx.fillStyle = '#3A3A3C';
         ctx.font = '600 16px -apple-system, sans-serif';
@@ -1562,7 +1536,12 @@
         ctx.beginPath(); ctx.moveTo(40, 125); ctx.lineTo(460, 125); ctx.stroke();
 
         ctx.fillStyle = 'rgba(255, 149, 0, 0.12)';
-        ctx.roundRect ? ctx.roundRect(110, 145, 280, 40, 12) : ctx.fillRect(110, 145, 280, 40);
+        if (ctx.roundRect) {
+            ctx.roundRect(110, 145, 280, 40, 12);
+            ctx.fill();
+        } else {
+            ctx.fillRect(110, 145, 280, 40);
+        }
         ctx.fillStyle = '#FF9500';
         ctx.font = 'bold 15px -apple-system, sans-serif';
         ctx.fillText('🟡 PENDIENTE POR VALIDAR', 250, 170);
@@ -1621,8 +1600,10 @@
     document.getElementById('btnEnviarCorreo').addEventListener('click', function() {
         reproducirSonidoToque(850, 0.08);
         const btnCorreo = document.getElementById('btnEnviarCorreo');
-        const montoFinalTexto = document.getElementById('t-monto').innerText;
+        const montoEl = document.getElementById('t-monto');
+        const montoFinalTexto = montoEl ? montoEl.innerText : "$0.00";
         
+        if (!btnCorreo) return;
         btnCorreo.disabled = true;
         btnCorreo.innerText = "Enviando correo automático...";
 
@@ -1638,17 +1619,19 @@
             referencia: referenciaIngresada
         };
 
-        emailjs.send('service_8mka1j9', 'template_3ywl5w9', templateParams)
-            .then(function(response) {
-                alert("✅ ¡Correo enviado a Esteban con éxito!");
-                btnCorreo.disabled = false;
-                btnCorreo.innerText = "✉️ Enviar Orden a mi Correo";
-                cambiarPantalla('seccionTicket', 'seccionCalificacion');
-            }, function(error) {
-                alert("⚠️ Error al enviar el correo automáticamente. Verifica tus credenciales de EmailJS.");
-                btnCorreo.disabled = false;
-                btnCorreo.innerText = "✉️ Enviar Orden a mi Correo";
-            });
+        if (typeof emailjs !== 'undefined') {
+            emailjs.send('service_8mka1j9', 'template_3ywl5w9', templateParams)
+                .then(function(response) {
+                    alert("✅ ¡Correo enviado a Esteban con éxito!");
+                    btnCorreo.disabled = false;
+                    btnCorreo.innerText = "✉️ Enviar Orden a mi Correo";
+                    cambiarPantalla('seccionTicket', 'seccionCalificacion');
+                }, function(error) {
+                    alert("⚠️ Error al enviar el correo automáticamente. Verifica tus credenciales de EmailJS.");
+                    btnCorreo.disabled = false;
+                    btnCorreo.innerText = "✉️ Enviar Orden a mi Correo";
+                });
+        }
     });
 
     document.querySelectorAll('.stars-wrapper input').forEach(function(starInput) {
@@ -1665,33 +1648,42 @@
                 }).catch(() => {});
             }
 
-            document.querySelector('.stars-wrapper').style.display = 'none';
-            document.getElementById('mensajeAgradecimiento').style.display = 'block';
+            const starsWrapper = document.querySelector('.stars-wrapper');
+            const mensajeAgrad = document.getElementById('mensajeAgradecimiento');
+            if (starsWrapper) starsWrapper.style.display = 'none';
+            if (mensajeAgrad) mensajeAgrad.style.display = 'block';
         });
     });
 
-    document.getElementById('btnFinalTodo').addEventListener('click', function() { location.reload(); });
-    document.getElementById('btnNuevaOrden').addEventListener('click', function() { location.reload(); });
-    
-    document.getElementById('btnAtrasSeleccionJuego').addEventListener('click', function() { cambiarPantalla('seccionLogin', 'seccionSeleccionJuego'); });
-    document.getElementById('btnAtrasRecarga').addEventListener('click', function() { cambiarPantalla('seccionRecarga', 'seccionLogin'); });
-    document.getElementById('btnAtrasMetodo').addEventListener('click', function() { cambiarPantalla('seccionMetodoPago', 'seccionRecarga'); });
-    document.getElementById('btnCancelarPago').addEventListener('click', function() { cambiarPantalla('seccionPago', 'seccionMetodoPago'); });
+    const addClick = (id, fn) => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('click', fn);
+    };
+
+    addClick('btnFinalTodo', () => location.reload());
+    addClick('btnNuevaOrden', () => location.reload());
+    addClick('btnAtrasSeleccionJuego', () => cambiarPantalla('seccionLogin', 'seccionSeleccionJuego'));
+    addClick('btnAtrasRecarga', () => cambiarPantalla('seccionRecarga', 'seccionLogin'));
+    addClick('btnAtrasMetodo', () => cambiarPantalla('seccionMetodoPago', 'seccionRecarga'));
+    addClick('btnCancelarPago', () => cambiarPantalla('seccionPago', 'seccionMetodoPago'));
 
     const containerParticulas = document.getElementById('particles-container');
-    const cantidadParticulas = 35;
-    const coloresParticulas = ['#FF69B4', '#00BFFF', '#FF1493', '#1E90FF'];
+    if (containerParticulas) {
+        const cantidadParticulas = 35;
+        const coloresParticulas = ['#FF69B4', '#00BFFF', '#FF1493', '#1E90FF'];
 
-    for (let i = 0; i < cantidadParticulas; i++) {
-        const particula = document.createElement('div');
-        particula.classList.add('particle');
-        const tamano = Math.random() * 12 + 6;
-        particula.style.width = tamano + 'px'; particula.style.height = tamano + 'px';
-        particula.style.background = coloresParticulas[Math.floor(Math.random() * coloresParticulas.length)];
-        particula.style.left = (Math.random() * 100) + 'vw';
-        particula.style.animationDuration = (Math.random() * 8 + 6) + 's';
-        particula.style.animationDelay = (Math.random() * -10) + 's';
-        containerParticulas.appendChild(particula);
+        for (let i = 0; i < cantidadParticulas; i++) {
+            const particula = document.createElement('div');
+            particula.classList.add('particle');
+            const tamano = Math.random() * 12 + 6;
+            particula.style.width = tamano + 'px'; 
+            particula.style.height = tamano + 'px';
+            particula.style.background = coloresParticulas[Math.floor(Math.random() * coloresParticulas.length)];
+            particula.style.left = (Math.random() * 100) + 'vw';
+            particula.style.animationDuration = (Math.random() * 8 + 6) + 's';
+            particula.style.animationDelay = (Math.random() * -10) + 's';
+            containerParticulas.appendChild(particula);
+        }
     }
 
     const fakePurchases = [
@@ -1707,6 +1699,7 @@
         const userEl = document.getElementById('hypeUser');
         const descEl = document.getElementById('hypeDesc');
         
+        if (!notifBox || !userEl || !descEl) return;
         const randomPurchase = fakePurchases[Math.floor(Math.random() * fakePurchases.length)];
         
         userEl.innerText = "🔥 @" + randomPurchase.user;
@@ -1723,52 +1716,6 @@
         showNextHypeNotification();
         setInterval(showNextHypeNotification, 12000);
     }, 3000);
-
-    const aiToggleBtn = document.getElementById('aiToggleBtn');
-    const aiChatContainer = document.getElementById('aiChatContainer');
-    const aiCloseBtn = document.getElementById('aiCloseBtn');
-    const aiChatMessages = document.getElementById('aiChatMessages');
-    const aiChatInput = document.getElementById('aiChatInput');
-    const aiSendBtn = document.getElementById('aiSendBtn');
-
-    aiToggleBtn.addEventListener('click', () => {
-        aiChatContainer.classList.toggle('active');
-        if (aiChatContainer.classList.contains('active')) {
-            aiChatInput.focus();
-        }
-    });
-
-    aiCloseBtn.addEventListener('click', () => {
-        aiChatContainer.classList.remove('active');
-    });
-
-    function handleSendMessage() {
-        const text = aiChatInput.value.trim();
-        if (!text) return;
-
-        appendMessage(text, 'user');
-        aiChatInput.value = '';
-
-        setTimeout(() => {
-            const botResponse = "Entendido. Estoy procesando tu consulta para darte la mejor respuesta dentro de la plataforma.";
-            appendMessage(botResponse, 'bot');
-        }, 600);
-    }
-
-    function appendMessage(text, sender) {
-        const msgDiv = document.createElement('div');
-        msgDiv.classList.add('ai-message', sender);
-        msgDiv.textContent = text;
-        aiChatMessages.appendChild(msgDiv);
-        aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
-    }
-
-    aiSendBtn.addEventListener('click', handleSendMessage);
-    aiChatInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') {
-            handleSendMessage();
-        }
-    });
 </script>
 </body>
 </html>
